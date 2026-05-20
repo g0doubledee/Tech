@@ -1,4 +1,28 @@
+""""""
+Transaction Model
+TECH Core adapted for data integrity
 """
+
+from datetime import datetime
+
+class Transaction:
+    """Transaction model"""
+    
+    def __init__(self, amount: float, tx_type: str, description: str = ""):
+        self.amount = amount
+        self.type = tx_type
+        self.description = description
+        self.created_at = datetime.now().isoformat()
+        self.status = "completed"
+    
+    def to_dict(self) -> dict:
+        return {
+            "amount": self.amount,
+            "type": self.type,
+            "description": self.description,
+            "status": self.status,
+            "created_at": self.created_at
+        }
 Transaction Model
 TECH Core adapted — continuously improving
 """
