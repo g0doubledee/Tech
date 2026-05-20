@@ -1,0 +1,1 @@
+"""Divine Wallet API Module — TECH Core Adapted"""
