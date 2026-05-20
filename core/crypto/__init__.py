@@ -1,0 +1,1 @@
+"""Divine Wallet Crypto Module — TECH Core Adapted"""
