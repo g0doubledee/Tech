@@ -1,0 +1,1 @@
+"""Divine Wallet Services — TECH Core Adapted"""
