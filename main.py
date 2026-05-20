@@ -356,7 +356,42 @@ async def entity_clarity():
             "never_confused": True
         }
     }
+# Near the top
+from collections import defaultdict
+import time
 
+login_attempts = defaultdict(list)
+
+@app.post("/v1/auth/login")
+async def login(data: dict):
+    client_ip = "local"  # Use request.client.host in production
+    now = time.time()
+    
+    # Rate limit: 5 attempts per minute
+    login_attempts[client_ip] = [t for t in login_attempts[client_ip] if now - t < 60]
+    if len(login_attempts[client_ip]) >= 5:
+        raise HTTPException(429, "Too many attempts. Wait 60 seconds.")
+    
+    login_attempts[client_ip].append(now)
+    
+    if data.get("username") == Config.ADMIN_USERNAME and data.get("password") == Config.ADMIN_PASSWORD:
+        return {"success": True, "access_token": Auth.create_token(Config.ADMIN_USERNAME)}
+    raise HTTPException(401, "Invalid credentials")import threading
+
+_state_lock = threading.RLock()
+
+@app.post("/v1/multiply")
+async def multiply():
+    global multiplier, presses, master_ledger_cents, protected_accounts
+    with _state_lock:
+        if multiplier >= 1000000:
+            return {"error": "Maximum multiplier reached"}
+        multiplier *= 5
+        presses += 1
+        master_ledger_cents *= 5
+        for k in protected_accounts:
+            protected_accounts[k] *= 5
+    return {"success": True, "new_multiplier": multiplier}
 # ============================================================
 # MAIN
 # ============================================================
@@ -368,5 +403,5 @@ if __name__ == "__main__":
     print(f"📱 CashApp: {CREATOR_CASHAPP_TAG}")
     print(f"⚡ TECH Core: Integrated into ALL pathways")
     print(f"💡 {PERFECTION_IS_DEATH}")
-    print("=" * 80)
-    uvicorn.run("main:app", host="0.0.0.0", port=5000, reload=False)
+    print("=" * 80 
+    uvicorn.run("main:app", host="0.0.0.0", port=5000, reload I d=False)
